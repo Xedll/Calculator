@@ -7,7 +7,6 @@ import Wrapper from './Components/Wrapper';
 function App() {
 
    const [calc, setCalc] = useState({
-      answ: '',
       num1: '',
       num2: '',
       sign: '',
@@ -21,9 +20,7 @@ function App() {
       '.', '0', '=',
    ]
 
-   //TODO: Убрать 0 с начала
-
-   function handlenum1Click(e) {
+   function handleNumClick(e) {
       e.preventDefault();
       setCalc({
          ...calc,
@@ -36,7 +33,6 @@ function App() {
       setCalc({
          ...calc,
          num1: '',
-         answ: '',
          num2: '',
          sign: '',
       })
@@ -52,10 +48,18 @@ function App() {
 
    function handleSignClick(e) {
       e.preventDefault()
-      setCalc({
-         ...calc,
-         num1: String(+calc.num1 * -1)
-      })
+      if (!calc.num1) {
+         setCalc({
+            ...calc,
+            num2: String(+calc.num2 * -1)
+         })
+      } else {
+         setCalc({
+            ...calc,
+            num1: String(+calc.num1 * -1)
+         })
+      }
+
    }
 
    function handleDivisionClick(e) {
@@ -67,12 +71,11 @@ function App() {
             num1: '',
             sign: '/',
          })
-      } else if (calc.answ) {
+      } else if (calc.num2) {
          setCalc({
             ...calc,
-            num2: calc.answ,
-            answ: '',
-            sign: '/',
+            num1: '',
+            sign: '/'
          })
       } else {
          setCalc({
@@ -91,15 +94,13 @@ function App() {
             ...calc,
             num2: answer(calc.num1, calc.num2, calc.sign),
             num1: '',
-            answ: '',
             sign: '*'
          })
-      } else if (calc.answ) {
+      } else if (calc.num2) {
          setCalc({
             ...calc,
-            num2: calc.answ,
-            answ: '',
-            sign: '*',
+            num1: '',
+            sign: '*'
          })
       } else {
          setCalc({
@@ -118,14 +119,12 @@ function App() {
             ...calc,
             num2: answer(calc.num1, calc.num2, calc.sign),
             num1: '',
-            answ: '',
             sign: "+",
          })
-      } else if (calc.answ) {
+      } else if (calc.num2) {
          setCalc({
             ...calc,
-            num2: calc.answ,
-            answ: '',
+            num1: '',
             sign: '+'
          })
       } else {
@@ -133,7 +132,7 @@ function App() {
             ...calc,
             num2: calc.num1,
             num1: '',
-            sign: '+',
+            sign: '+'
          })
       }
    }
@@ -144,23 +143,21 @@ function App() {
          setCalc({
             ...calc,
             num1: '',
-            answ: '',
             sign: "-",
             num2: answer(calc.num1, calc.num2, calc.sign),
          })
-      } else if (calc.answ) {
+      } else if (calc.num2) {
          setCalc({
             ...calc,
-            num2: calc.answ,
-            answ: '',
-            sign: '-',
+            num1: '',
+            sign: '-'
          })
       } else {
          setCalc({
             ...calc,
             num2: calc.num1,
             num1: '',
-            sign: '-',
+            sign: '-'
          })
       }
    }
@@ -180,9 +177,8 @@ function App() {
       if ((calc.num1 && calc.num2)) {
          setCalc({
             ...calc,
-            answ: answer(calc.num1, calc.num2, calc.sign),
             num1: '',
-            num2: '',
+            num2: answer(calc.num1, calc.num2, calc.sign),
             sign: '',
          })
       }
@@ -194,18 +190,18 @@ function App() {
          alert('На ноль делить нельзя!')
          answ = '0';
       } else {
-         answ = sign === "+" ? String(+a + +b) :
-            sign === "-" ? String(+b - +a) :
-               (sign === "/" && a !== '0') ? String(+b / +a) :
-                  sign === "*" ? String(+b * +a) :
+         answ = sign === "+" ? String(+((+a + +b).toFixed(6))) :
+            sign === "-" ? String(+((+b - +a).toFixed(6))) :
+               (sign === "/" && a !== '0') ? String(+((+b / +a).toFixed(6))) :
+                  sign === "*" ? String(+((+b * +a).toFixed(6))) :
                      String(0)
       }
       return answ
    }
 
    return (
-      <div className="App flex justify-center items-center p-3.5">
-         <Wrapper>
+      <div className="App flex justify-center items-center ">
+         <Wrapper >
             <MyScreen calc={calc} />
             <MyButtonBox>
                {Buttons.map((item, index) => {
@@ -222,7 +218,7 @@ function App() {
                                           item === "+" ? handleAddClick :
                                              item === "." ? handleFractionClick :
                                                 item === "=" ? handleEqualClick :
-                                                   handlenum1Click
+                                                   handleNumClick
                         }
                      >
                         {item}

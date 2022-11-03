@@ -2,7 +2,7 @@ import React from 'react';
 
 const Wrapper = ({ children }) => {
    return (
-      <div className='p-1.5 bg-2a max-w-xs border-2 border-4a border-solid rounded-lg '>
+      <div className=' bg-2a border-2 border-4a border-solid rounded-lg m-3.5 p-1.5 '>
          {children}
       </div>
    );

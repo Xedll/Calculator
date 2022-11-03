@@ -4,6 +4,9 @@ module.exports = {
       "./src/**/*.{js,jsx,ts,tsx}",
    ],
    theme: {
+      maxWidth: {
+         '140': '140px'
+      },
       minHeight: {
          '20': '20px',
       },
@@ -25,6 +28,9 @@ module.exports = {
             '14a': '#718a8f',
             '15a': '#7691a8',
          },
+         margin: {
+            'a0': 'auto 0',
+         }
       },
    },
    plugins: [],
